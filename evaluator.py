@@ -1,7 +1,4 @@
-import math
 import numpy as np
-import scipy.stats as sps
-from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 
 def evaluate(prediction, ground_truth, mask, report=False):
@@ -15,9 +12,7 @@ def evaluate(prediction, ground_truth, mask, report=False):
     bt_long5 = 1.0
     bt_long10 = 1.0
 
-    # 每个交易日
     for i in range(prediction.shape[1]):
-        # 选出ground truth 的 top1、5、10的股票代号
         rank_gt = np.argsort(ground_truth[:, i])
         gt_top1 = set()
         gt_top5 = set()
@@ -32,7 +27,6 @@ def evaluate(prediction, ground_truth, mask, report=False):
                 gt_top5.add(cur_rank)
             if len(gt_top10) < 10:
                 gt_top10.add(cur_rank)
-        # 选出预测的top1，5，10
         rank_pre = np.argsort(prediction[:, i])
         pre_top1 = set()
         pre_top5 = set()
