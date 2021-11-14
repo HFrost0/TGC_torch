@@ -1,6 +1,6 @@
 # TGC_torch
 A Pytorch implementation of the paper [Temporal Relational Ranking for Stock Prediction](https://arxiv.org/abs/1809.09441).
-The officical tensorflow implementation are [here](https://github.com/fulifeng/Temporal_Relational_Stock_Ranking)
+The officical tensorflow implementation is [here](https://github.com/fulifeng/Temporal_Relational_Stock_Ranking)
 # requirements
 Python>=3.6 and torch>=1.3
 # Run the code
