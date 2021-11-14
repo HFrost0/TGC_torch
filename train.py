@@ -11,7 +11,7 @@ np.random.seed(123456789)
 torch.random.manual_seed(12345678)
 device = torch.device("cuda") if torch.cuda.is_available() else 'cpu'
 
-data_path = '/Users/huanghuiling/PycharmProjects/Github/Temporal_Relational_Stock_Ranking/data/2013-01-01'
+data_path = 'data/2013-01-01'
 market_name = 'NASDAQ'
 tickers_fname = market_name + '_tickers_qualify_dr-0.98_min-5_smooth.csv'
 relation_name = 'wikidata'
