@@ -60,7 +60,7 @@ class StockLSTM(nn.Module):
     def __init__(self, batch_size):
         super().__init__()
         self.batch_size = batch_size
-        self.lstm_cell = nn.LSTM(5, 64)
+        self.lstm_cell = nn.LSTM(5, 64, batch_first=True)
         self.fc = nn.Linear(64, 1)
 
     def forward(self, inputs):
