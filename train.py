@@ -13,8 +13,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else 'cpu'
 
 data_path = 'data/2013-01-01'
 market_name = 'NASDAQ'
-tickers_fname = market_name + '_tickers_qualify_dr-0.98_min-5_smooth.csv'
-relation_name = 'wikidata'
+relation_name = 'wikidata'  # or sector_industry
 parameters = {'seq': 16, 'unit': 64, 'alpha': 0.1}
 epochs = 30
 valid_index = 756
@@ -22,6 +21,7 @@ test_index = 1008
 fea_dim = 5
 steps = 1
 
+tickers_fname = market_name + '_tickers_qualify_dr-0.98_min-5_smooth.csv'
 tickers = np.genfromtxt(os.path.join(data_path, '..', tickers_fname), dtype=str, delimiter='\t', skip_header=False)
 batch_size = len(tickers)
 print('#tickers selected:', len(tickers))

@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from tqdm import tqdm
 
 
 def load_EOD_data(data_path, market_name, tickers, steps=1):
@@ -7,7 +8,7 @@ def load_EOD_data(data_path, market_name, tickers, steps=1):
     masks = []
     ground_truth = []
     base_price = []
-    for index, ticker in enumerate(tickers):
+    for index, ticker in enumerate(tqdm(tickers)):
         single_EOD = np.genfromtxt(
             os.path.join(data_path, market_name + '_' + ticker + '_1.csv'),
             dtype=np.float32, delimiter=',', skip_header=False

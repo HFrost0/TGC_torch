@@ -35,7 +35,7 @@ class GraphModule(nn.Module):
         self.relation = nn.Parameter(torch.tensor(rel_encoding, dtype=torch.float32, requires_grad=False))
         self.rel_mask = nn.Parameter(torch.tensor(rel_mask, dtype=torch.float32, requires_grad=False))
         self.all_one = nn.Parameter(torch.ones(self.batch_size, 1, dtype=torch.float32, requires_grad=False))
-        self.rel_weight = nn.Linear(43, 1)
+        self.rel_weight = nn.Linear(rel_encoding.shape[-1], 1)
         if self.inner_prod is False:
             self.head_weight = nn.Linear(fea_shape, 1)
             self.tail_weight = nn.Linear(fea_shape, 1)
