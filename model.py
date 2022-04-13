@@ -11,14 +11,14 @@ def get_loss(prediction, ground_truth, base_price, mask, batch_size, alpha):
     reg_loss = F.mse_loss(return_ratio * mask, ground_truth * mask)
     # formula (4-6)
     pre_pw_dif = torch.sub(
-        return_ratio @ all_one.t().contiguous(),
-        all_one @ return_ratio.t().contiguous()
+        return_ratio @ all_one.t(),
+        all_one @ return_ratio.t()
     )
     gt_pw_dif = torch.sub(
-        all_one @ ground_truth.t().contiguous(),
-        ground_truth @ all_one.t().contiguous()
+        all_one @ ground_truth.t(),
+        ground_truth @ all_one.t()
     )
-    mask_pw = mask @ mask.t().contiguous()
+    mask_pw = mask @ mask.t()
     rank_loss = torch.mean(
         F.relu(pre_pw_dif * gt_pw_dif * mask_pw)
     )
@@ -32,9 +32,9 @@ class GraphModule(nn.Module):
         self.batch_size = batch_size
         self.input_shape = fea_shape
         self.inner_prod = inner_prod
-        self.relation = nn.Parameter(torch.tensor(rel_encoding, dtype=torch.float32, requires_grad=False))
-        self.rel_mask = nn.Parameter(torch.tensor(rel_mask, dtype=torch.float32, requires_grad=False))
-        self.all_one = nn.Parameter(torch.ones(self.batch_size, 1, dtype=torch.float32, requires_grad=False))
+        self.relation = nn.Parameter(torch.tensor(rel_encoding, dtype=torch.float32), requires_grad=False)
+        self.rel_mask = nn.Parameter(torch.tensor(rel_mask, dtype=torch.float32), requires_grad=False)
+        self.all_one = nn.Parameter(torch.ones(self.batch_size, 1, dtype=torch.float32), requires_grad=False)
         self.rel_weight = nn.Linear(rel_encoding.shape[-1], 1)
         if self.inner_prod is False:
             self.head_weight = nn.Linear(fea_shape, 1)
@@ -43,14 +43,13 @@ class GraphModule(nn.Module):
     def forward(self, inputs):
         rel_weight = self.rel_weight(self.relation)
         if self.inner_prod:
-            inner_weight = inputs @ inputs.t().contiguous()
+            inner_weight = inputs @ inputs.t()
             weight = inner_weight @ rel_weight[:, :, -1]
         else:
             all_one = self.all_one
             head_weight = self.head_weight(inputs)
             tail_weight = self.tail_weight(inputs)
-            weight = (head_weight @ all_one.t().contiguous() +
-                      all_one @ tail_weight.t().contiguous()) + rel_weight[:, :, -1]
+            weight = (head_weight @ all_one.t() + all_one @ tail_weight.t()) + rel_weight[:, :, -1]
         weight_masked = F.softmax(self.rel_mask + weight, dim=0)
         outputs = weight_masked @ inputs
         return outputs
